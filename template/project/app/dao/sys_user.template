@@ -1,0 +1,8 @@
+package dao
+
+import "{{ .ProjectName }}/app/model"
+
+
+func NewUserModel() *model.UserModel {
+	return &model.UserModel{}
+}

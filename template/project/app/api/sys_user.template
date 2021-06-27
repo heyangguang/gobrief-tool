@@ -1,0 +1,31 @@
+package api
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"{{ .ProjectName }}/app/dao"
+	"{{ .ProjectName }}/app/model"
+	"{{ .ProjectName }}/{{ .ProjectName }}/form_validation"
+	"{{ .ProjectName }}/{{ .ProjectName }}/logger"
+	. "{{ .ProjectName }}/{{ .ProjectName }}/result"
+)
+
+func UserCreate(c *gin.Context) {
+	user := dao.NewUserModel()
+	_ = c.ShouldBind(user)
+	if err := form_validation.Validate.Struct(user); err != nil {
+		R(c)(ParamCheckError, ResultText(ParamCheckError), nil, E("sys_user", err))(Error)
+		return
+	}
+	logger.Debug(fmt.Sprintf("%v", user))
+	R(c)(SuccessCode, ResultText(SuccessCode), nil, nil)(OK)
+}
+
+func UserList(c *gin.Context) {
+	user := model.UserModel{
+		UserId:   0,
+		UserName: "",
+		UserPwd:  "",
+	}
+	R(c)(SuccessCode, ResultText(SuccessCode), user, nil)(OK)
+}
